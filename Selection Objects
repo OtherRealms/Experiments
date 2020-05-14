@@ -1,0 +1,44 @@
+import bpy
+import bmesh
+        
+if bpy.context.mode == 'EDIT_MESH': 
+    accuracy = str(2)
+    # Get the active mesh
+    objB = bpy.context.edit_object
+    obj_data = objB.data
+    print("----------")
+    objA  = []
+    for obj in bpy.context.selected_objects:
+        if obj != bpy.context.active_object:
+            objA.append(obj)
+            
+    positions = []
+        
+    bm = bmesh.from_edit_mesh(obj_data)
+    bm.faces.active = None
+    bm.select_flush(True)
+    for obj in objA:
+        for vert in obj.data.vertices:
+            vector = []
+            co = obj.matrix_world @ vert.co
+            
+            for pos in co:
+                vector.append(format(pos,'.'+ accuracy +'f'))
+            positions.append(vector)
+            #print('----------',vector,vert.co)
+        
+    #print(positions)
+
+    for vert in objB.data.vertices:
+        vector = []
+        co = objB.matrix_world @ vert.co
+        
+        for pos in co:
+            vector.append(format(pos,'.'+ accuracy +'f'))
+
+        if vector in positions:
+            bm.verts[vert.index].select_set(True)
+            print('MATCH',vector,vert.index)
+         
+
+    bmesh.update_edit_mesh(obj_data , True)
