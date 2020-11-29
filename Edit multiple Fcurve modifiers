@@ -1,0 +1,22 @@
+import bpy
+
+#Replace with your objects 'Action' datablock
+action_name = 'ArmatureAction'
+
+#modidifier type
+type = 'NOISE'
+
+#Properties go here
+scale = 200
+strength = 0.05
+offset = 0.1
+
+
+action = bpy.data.actions[action_name]
+for fcurve in action.fcurves:
+    if len(fcurve.modifiers) > 0:
+        if fcurve.modifiers[0].type ==type:
+            #This is for Noise,
+            fcurve.modifiers[0].strength = strength
+            fcurve.modifiers[0].scale = scale
+            fcurve.modifiers[0].offset = offset
