@@ -16,7 +16,10 @@ action = bpy.data.actions[action_name]
 for fcurve in action.fcurves:
     if len(fcurve.modifiers) > 0:
         if fcurve.modifiers[0].type ==type:
-            #This is for Noise,
+        
+            #This is for Noise, change for other modifiers
             fcurve.modifiers[0].strength = strength
             fcurve.modifiers[0].scale = scale
             fcurve.modifiers[0].offset = offset
+
+# Now run code!
